@@ -27,14 +27,14 @@ The core of this project focused on networking architecture and security. IoT de
 * Vanilla JS implementation to maintain minimal latency and avoid unnecessary framework overhead.
 
 ## Project Structure
-```text
+```
 .
 ├── k8s-mesh-sentinel
 │   ├── client/       # Web client (HTML/JS)
 │   ├── firmware/     # C++ code for ESP8266
 │   ├── k8s/          # Kubernetes YAML manifests
 │   └── server/       # Python backend and Dockerfile
-
+```
 
 ## Wersja Polska
 
