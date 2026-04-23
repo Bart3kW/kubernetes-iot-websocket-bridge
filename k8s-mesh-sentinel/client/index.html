@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>K8s WebSocket Chat</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1e1e1e; color: #fff; }
+        #chat { height: 300px; overflow-y: scroll; border: 1px solid #444; padding: 10px; margin-bottom: 10px; background: #2d2d2d; }
+        input, button { padding: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Czat Systemu K8s</h2>
+    <div id="chat"></div>
+    <input type="text" id="msgInput" placeholder="Napisz wiadomość...">
+    <button onclick="sendMsg()">Wyślij</button>
+
+    <script>
+        const ws = new WebSocket("ws://192.168.X.X:00000");
+
+        ws.onopen = () => {
+            // Rejestracja w systemie
+            ws.send(JSON.stringify({ name: "Admin_PC" }));
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const chat = document.getElementById("chat");
+            let text = "";
+            
+            if (data.type === "system") text = `<i style="color: #888;">${data.msg}</i><br>`;
+            else if (data.type === "chat") text = `<b>${data.name}:</b> ${data.msg}<br>`;
+            
+            chat.innerHTML += text;
+            chat.scrollTop = chat.scrollHeight;
+        };
+
+        function sendMsg() {
+            const input = document.getElementById("msgInput");
+            ws.send(JSON.stringify({ msg: input.value }));
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
