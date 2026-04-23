@@ -1,6 +1,7 @@
 # Kubernetes IoT WebSocket Bridge
 ![System Demonstration](wemosMessage.jpg)
 
+Wersja polska poniżej
 A real-time communication system bridging a web browser and an ESP8266 microcontroller, running inside a local Kubernetes cluster. Built to explore cross-VLAN routing and container orchestration in a HomeLab environment.
 
 ## The Challenge: Network Isolation and Security
@@ -33,3 +34,31 @@ The core of this project focused on networking architecture and security. IoT de
 │   ├── firmware/     # C++ code for ESP8266
 │   ├── k8s/          # Kubernetes YAML manifests
 │   └── server/       # Python backend and Dockerfile
+
+
+## Wersja Polska
+
+Projekt pokazuje, jak połączyć zwykłą stronę internetową z mikrokontrolerem ESP8266 przy pomocy klastra Kubernetes. Całość działa w domowej sieci i skupia się na bezpiecznym przesyłaniu danych między różnymi strefami WiFi.
+
+### Sieć i bezpieczeństwo (ZTE & OpenWrt)
+Najważniejszą częścią projektu była konfiguracja routera, aby urządzenia IoT nie miały dostępu do moich prywatnych plików:
+1. **Router ZTE z OpenWrt**: Na routerze ZTE MF286D zainstalowałem system OpenWrt, który pozwala na pełną kontrolę nad ruchem.
+2. **Izolacja przez VLAN**: Wemos działa w wydzielonej sieci VLAN (samba-iot). Jest ona całkowicie odcięta od głównej sieci LAN.
+3. **Reguły Firewall**: Ustawiłem specjalną regułę w OpenWrt, która pozwala Wemosowi "rozmawiać" z klastrem Kubernetes tylko przez jeden konkretny port (30000). Cała reszta ruchu jest blokowana.
+
+### Jak to działa?
+
+#### Serwer i Kubernetes
+* **Backend**: Prosta aplikacja w Pythonie działająca na serwerze WebSocket. Obsługuje ona wiadomości w czasie rzeczywistym.
+* **Kubernetes (K3s)**: Cały serwer działa jako kontener w klastrze K3s. Dzięki usłudze NodePort aplikacja jest widoczna dla urządzeń z zewnątrz klastra.
+
+#### Sprzęt (Wemos D1 Mini)
+* **Ekran OLED**: Mały wyświetlacz SSD1306 pokazuje, czy Wemos jest połączony z siecią i co aktualnie przesyła serwer.
+* **Format danych**: Dane przesyłane są w formacie JSON (biblioteka ArduinoJson).
+* **Stabilność**: Jeśli serwer zostanie zrestartowany, Wemos sam wykryje brak połączenia i spróbuje połączyć się ponownie.
+
+#### Strona klienta
+* Prosty plik HTML i JavaScript. Pozwala wpisać wiadomość w przeglądarce i natychmiast wysłać ją do urządzenia.
+
+---
+Projekt zrobiony, aby nauczyć się łączenia fizycznego sprzętu z kontenerami przy zachowaniu bezpiecznej konfiguracji sieciowej na OpenWrt.
