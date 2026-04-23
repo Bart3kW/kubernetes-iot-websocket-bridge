@@ -1,4 +1,5 @@
 # Kubernetes IoT WebSocket Bridge
+![System Demonstration](wemosMessage.jpg)
 
 A real-time communication system bridging a web browser and an ESP8266 microcontroller, running inside a local Kubernetes cluster. Built to explore cross-VLAN routing and container orchestration in a HomeLab environment.
 
